@@ -28,7 +28,7 @@ const Header = () => {
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
-  const handleSubmenu = (index) => {
+  const handleSubmenu = (index: number) => {
     if (openIndex === index) {
       setOpenIndex(-1);
     } else {
@@ -36,7 +36,7 @@ const Header = () => {
     }
   };
 
-  const usePathName = usePathname();
+  const pathname = usePathname();
 
   return (
     <>
@@ -50,27 +50,7 @@ const Header = () => {
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">
             <div className="w-60 max-w-full px-4 xl:mr-12">
-              {/* <Link
-                href="/"
-                className={`header-logo block w-full ${
-                  sticky ? "py-5 lg:py-2" : "py-8"
-                } `}
-              >
-                <Image
-                  src="/images/logo/logo-2.svg"
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="w-full dark:hidden"
-                />
-                <Image
-                  src="/images/logo/logo.svg"
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="hidden w-full dark:block"
-                />
-              </Link> */}
+              {/* Logo here if needed */}
             </div>
             <div className="flex w-full items-center justify-between px-4">
               <div>
@@ -109,9 +89,9 @@ const Header = () => {
                       <li key={index} className="group relative">
                         {menuItem.path ? (
                           <Link
-                            href={menuItem.path}
+                            href={menuItem.path || "#"}
                             className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
-                              usePathName === menuItem.path
+                              pathname === menuItem.path
                                 ? "text-primary dark:text-white"
                                 : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
                             }`}
@@ -141,15 +121,16 @@ const Header = () => {
                                 openIndex === index ? "block" : "hidden"
                               }`}
                             >
-                              {menuItem.submenu.map((submenuItem, index) => (
-                                <Link
-                                  href={submenuItem.path}
-                                  key={index}
-                                  className="text-dark hover:text-primary block rounded-sm py-2.5 text-sm lg:px-3 dark:text-white/70 dark:hover:text-white"
-                                >
-                                  {submenuItem.title}
-                                </Link>
-                              ))}
+                              {menuItem.submenu &&
+                                menuItem.submenu.map((submenuItem, subIndex) => (
+                                  <Link
+                                    href={submenuItem.path || "#"}
+                                    key={subIndex}
+                                    className="text-dark hover:text-primary block rounded-sm py-2.5 text-sm lg:px-3 dark:text-white/70 dark:hover:text-white"
+                                  >
+                                    {submenuItem.title}
+                                  </Link>
+                                ))}
                             </div>
                           </>
                         )}
@@ -159,7 +140,6 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-
                 <div>
                   <ThemeToggler />
                 </div>
